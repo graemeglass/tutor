@@ -60,12 +60,13 @@ Features
     :alt: Tutor local launch
     :target: https://www.terminalizer.com/view/3a8d55835686
 
-Quickstart
+Quickstart for Apple Silicon
 ----------
-
-1. Install the `latest stable release <https://github.com/overhangio/tutor/releases>`_ of Tutor
-2. Run ``tutor local launch``
-3. You're done!
+1. Clone the repo: git clone git@github.com:overhangio/tutor.git
+2. Edit docker-compose.yml and docker-compose.jobs.yml and add `platform: linux/amd64` to each image. 
+3. Run ``pip install -e .``
+4. Run ``tutor local launch``
+5. You're done!
 
 Documentation
 -------------

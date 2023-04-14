@@ -3,6 +3,7 @@ services:
 
     mysql-job:
       image: {{ DOCKER_IMAGE_MYSQL }}
+      platform: linux/amd64
       depends_on: {{ [("mysql", RUN_MYSQL)]|list_if }}
 
     lms-job:

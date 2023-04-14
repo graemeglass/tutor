@@ -6,6 +6,7 @@ services:
   {% if RUN_MONGODB %}
   mongodb:
     image: {{ DOCKER_IMAGE_MONGODB }}
+    platform: linux/amd64
     # Use WiredTiger in all environments, just like at edx.org
     command: mongod --nojournal --storageEngine wiredTiger
     restart: unless-stopped
@@ -17,6 +18,7 @@ services:
       - mongodb-permissions
   mongodb-permissions:
     image: {{ DOCKER_IMAGE_PERMISSIONS }}
+    platform: linux/amd64
     command: ["999", "/data/db"]
     restart: on-failure
     volumes:
@@ -26,6 +28,7 @@ services:
   {% if RUN_MYSQL %}
   mysql:
     image: {{ DOCKER_IMAGE_MYSQL }}
+    platform: linux/amd64
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
     restart: unless-stopped
     user: "999:999"
@@ -36,6 +39,7 @@ services:
       MYSQL_ROOT_PASSWORD: "{{ MYSQL_ROOT_PASSWORD }}"
   mysql-permissions:
     image: {{ DOCKER_IMAGE_PERMISSIONS }}
+    platform: linux/amd64
     command: ["999", "/var/lib/mysql"]
     restart: on-failure
     volumes:
@@ -45,6 +49,7 @@ services:
   {% if RUN_ELASTICSEARCH %}
   elasticsearch:
     image: {{ DOCKER_IMAGE_ELASTICSEARCH }}
+    platform: linux/amd64
     environment:
       - cluster.name=openedx
       - bootstrap.memory_lock=true
@@ -62,6 +67,7 @@ services:
       - elasticsearch-permissions
   elasticsearch-permissions:
     image: {{ DOCKER_IMAGE_PERMISSIONS }}
+    platform: linux/amd64
     command: ["1000", "/usr/share/elasticsearch/data"]
     restart: on-failure
     volumes:
@@ -71,6 +77,7 @@ services:
   {% if RUN_REDIS %}
   redis:
     image: {{ DOCKER_IMAGE_REDIS }}
+    platform: linux/amd64
     working_dir: /openedx/redis/data
     user: "1000:1000"
     volumes:
@@ -82,6 +89,7 @@ services:
       - redis-permissions
   redis-permissions:
     image: {{ DOCKER_IMAGE_PERMISSIONS }}
+    platform: linux/amd64
     command: ["1000", "/openedx/redis/data"]
     restart: on-failure
     volumes:
@@ -91,6 +99,7 @@ services:
   {% if RUN_SMTP %}
   smtp:
     image: {{ DOCKER_IMAGE_SMTP }}
+    platform: linux/amd64
     restart: unless-stopped
     user: "100:101"
     environment:
@@ -102,6 +111,7 @@ services:
   {% if RUN_LMS %}
   lms:
     image: {{ DOCKER_IMAGE_OPENEDX }}
+    platform: linux/amd64
     environment:
       SERVICE_VARIANT: lms
       DJANGO_SETTINGS_MODULE: lms.envs.tutor.production
@@ -124,6 +134,7 @@ services:
       {{ patch("local-docker-compose-lms-dependencies")|indent(6) }}
   lms-permissions:
     image: {{ DOCKER_IMAGE_PERMISSIONS }}
+    platform: linux/amd64
     command: ["1000", "/openedx/data", "/openedx/media"]
     restart: on-failure
     volumes:
@@ -134,6 +145,7 @@ services:
   {% if RUN_CMS %}
   cms:
     image: {{ DOCKER_IMAGE_OPENEDX }}
+    platform: linux/amd64
     environment:
       SERVICE_VARIANT: cms
       DJANGO_SETTINGS_MODULE: cms.envs.tutor.production
@@ -157,6 +169,7 @@ services:
       {{ patch("local-docker-compose-cms-dependencies")|indent(6) }}
   cms-permissions:
     image: {{ DOCKER_IMAGE_PERMISSIONS }}
+    platform: linux/amd64
     command: ["1000", "/openedx/data", "/openedx/media"]
     restart: on-failure
     volumes:
@@ -169,6 +182,7 @@ services:
   {% if RUN_LMS %}
   lms-worker:
     image: {{ DOCKER_IMAGE_OPENEDX }}
+    platform: linux/amd64
     environment:
       SERVICE_VARIANT: lms
       DJANGO_SETTINGS_MODULE: lms.envs.tutor.production
@@ -187,6 +201,7 @@ services:
   {% if RUN_CMS %}
   cms-worker:
     image: {{ DOCKER_IMAGE_OPENEDX }}
+    platform: linux/amd64
     environment:
       SERVICE_VARIANT: cms
       DJANGO_SETTINGS_MODULE: cms.envs.tutor.production
