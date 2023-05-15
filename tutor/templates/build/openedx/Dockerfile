@@ -41,10 +41,6 @@ RUN git config --global user.email "tutor@overhang.io" \
 # Fix broken Circuit Schematic Builder problem template
 # https://github.com/openedx/edx-platform/pull/31365
 RUN curl -fsSL https://github.com/openedx/edx-platform/commit/20b93b8b01276edadddfbbb67f15714fddd81c31.patch | git am
-
-# Use supported YouTube API for transcripts imports
-# https://github.com/openedx/edx-platform/pull/31862
-RUN curl -fsSL https://github.com/openedx/edx-platform/commit/210dd1d7c211e531b9bc4376d1692a0bb0e6b651.patch | git am
 {%- endif %}
 
 {# Example: RUN curl -fsSL https://github.com/openedx/edx-platform/commit/<GITSHA1> | git am #}
@@ -117,7 +113,7 @@ FROM minimal as production
 
 # Install system requirements
 RUN apt update && \
-    apt install -y gettext gfortran graphviz graphviz-dev libffi-dev libfreetype6-dev libgeos-dev libjpeg8-dev liblapack-dev libmysqlclient-dev libpng-dev libsqlite3-dev libxmlsec1-dev lynx ntp pkg-config rdfind && \
+    apt install -y gettext gfortran graphviz graphviz-dev libffi-dev libfreetype6-dev libgeos-dev libjpeg8-dev liblapack-dev libmysqlclient-dev libpng-dev libsqlite3-dev libxmlsec1-dev lynx mysql-client ntp pkg-config rdfind && \
     rm -rf /var/lib/apt/lists/*
 
 # From then on, run as unprivileged "app" user
